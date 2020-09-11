@@ -75,32 +75,36 @@ public class task1 extends Configured implements Tool {
             return true;
         }
 
-        public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-            JSONObject jsonObject = new JSONObject(value.toString());
+        public void map(Object key, Text value, IntWritable IntWritable , Context context) throws IOException, InterruptedException
+        {
+            JSONObject jsonObject = new JSONObject();
+            int ans1 = [];
+            int ans2 = [];
 
             String inputString = context.getConfiguration().get("inputString");
-
+            int inputk = context.getConfiguration().get("k");
             String temp = jsonObject.get("word").toString();
+            String countrycodefinal = jsonObject.get("countrycode").toString();
+            int stroke1 = jsonObject.get("drawing");
 
-            if (!badrecord(jsonObject) && temp.equals(inputString.toString())) {
-                word1.set("task1a");
-                word2.set("task1b");
-                if (Boolean.valueOf(jsonObject.get("recognized").toString())) {
-                    context.write(word1, one);
-                } else {
-                    context.write(word1, zero);
-                }
-
-                LocalDate day = LocalDate.parse(jsonObject.get("timestamp").toString().substring(0, 10));
-
-                if (day.getDayOfWeek().toString().equals("SUNDAY")
-                        || day.getDayOfWeek().toString().equals("SATURDAY")) {
-                    if (Boolean.valueOf(jsonObject.get("recognized").toString())) {
-                        context.write(word2, zero);
-                    } else {
-                        context.write(word2, one);
+            if (!badrecord(jsonObject) && temp.equals(inputString.toString())) 
+            {
+                for (int i=0; i<=1; i++)
+                {
+                    for (int j=0; j<stroke1[0][0][0].length(); j++)
+                    {
+                        ans1[i][j] = stroke1[0][i][j]*stroke1[0][i][j]; 
+                        ans2[i] = ans2[i] + ans1[i][j]; 
                     }
                 }
+
+                ans = Math.sqrt(ans2[0]) + Math.sqrt(ans2[1]);
+                
+                if (ans > jsonObject.get("k") 
+                {
+                    context.write(countrycodefinal, one);
+                } 
+
             }
         }
     }
